@@ -1,45 +1,29 @@
 <script setup>
 import { computed, ref, watch } from 'vue';
 
-let counter = ref();
-let result = ref(0);
-// const w = watch(result, () => {
-// 	if (result.value > 5) {
-// 		setTimeout(() => {
-// 			result.value = 0;
-// 		}, 2000);
-// 	}
-// });
-const inc = value => {
-	return (result.value += value);
+const enteredGoal = ref('');
+const goals = ref([]);
+const addGoal = () => {
+	goals.value.push(enteredGoal.value);
+	console.log(goals.value);
 };
-const decr = value => {
-	return (result.value -= value);
-};
-const w2 = computed(() => {
-	if (result.value < 37) {
-		return 'Not there yet';
-	} else if (result.value === 37) {
-		return 'Enough!';
-	} else {
-		return 'Too much!';
-	}
-});
-watch(result, () => {
-	setTimeout(() => {
-		result.value = 0;
-	}, 3000);
-});
 </script>
 <template>
 	<div>
-		<button @click="inc(5)">Add 5</button>
-		<button @click="inc(1)">Add 1</button>
-		<!-- 1) Connect the buttons and calculate a value (a number) -->
-		<!-- Show "Not there yet" until you reach a result of exactly 37 -->
-		<!-- Show "Too much!" if the result is greater than 37 -->
-		<p>{{ w2 }}: {{ result }}</p>
-		<!-- 2) Watch for changes in "result" and reset the value to 0 after 5 seconds -->
+		<header>
+			<h1>Vue Course Goals</h1>
+		</header>
+		<section id="user-goals">
+			<h2>My course goals</h2>
+			<input type="text" v-model="enteredGoal" />
+			<button @click="addGoal">Add Goal</button>
+			<p v-if="goals.length === 0">
+				No goals have been added yet - please start adding some!
+			</p>
+			<ul v-else>
+				<li v-for="goal1 in goals">{{ goal1 }}</li>
+			</ul>
+		</section>
 	</div>
 </template>
 <style scoped>
