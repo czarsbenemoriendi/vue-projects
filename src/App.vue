@@ -1,34 +1,45 @@
 <script setup>
-import { ref } from 'vue';
-const counter = ref(0);
-const inc = n => {
-	counter.value += n;
+import { computed, ref, watch } from 'vue';
+
+let counter = ref();
+let result = ref(0);
+// const w = watch(result, () => {
+// 	if (result.value > 5) {
+// 		setTimeout(() => {
+// 			result.value = 0;
+// 		}, 2000);
+// 	}
+// });
+const inc = value => {
+	return (result.value += value);
 };
-const red = n => {
-	counter.value -= n;
+const decr = value => {
+	return (result.value -= value);
 };
-const name = ref('');
-const confirmName = ref('');
-const confirmedName = () => {
-	confirmName.value = name.value;
-};
-const setName = e => {
-	name = e.target.value;
-};
+const w2 = computed(() => {
+	if (result.value < 37) {
+		return 'Not there yet';
+	} else if (result.value === 37) {
+		return 'Enough!';
+	} else {
+		return 'Too much!';
+	}
+});
+watch(result, () => {
+	setTimeout(() => {
+		result.value = 0;
+	}, 3000);
+});
 </script>
 <template>
 	<div>
-		<header>
-			<h1>Vue Events</h1>
-		</header>
-		<section id="events">
-			<h2>Events in Action</h2>
-			<button @click="inc(10)">Add</button>
-			<button @click="red(5)">Remove</button>
-			<p>Result: {{ counter }}</p>
-			<input type="text" v-model="name" @keyup.enter="confirmedName" />
-			<p>Your name: {{ confirmName }}</p>
-		</section>
+		<button @click="inc(5)">Add 5</button>
+		<button @click="inc(1)">Add 1</button>
+		<!-- 1) Connect the buttons and calculate a value (a number) -->
+		<!-- Show "Not there yet" until you reach a result of exactly 37 -->
+		<!-- Show "Too much!" if the result is greater than 37 -->
+		<p>{{ w2 }}: {{ result }}</p>
+		<!-- 2) Watch for changes in "result" and reset the value to 0 after 5 seconds -->
 	</div>
 </template>
 <style scoped>
