@@ -1,28 +1,29 @@
 <script setup>
-import { computed, ref, watch } from 'vue';
+import { computed, reactive, ref, watch } from 'vue';
 
-const enteredGoal = ref('');
-const goals = ref([]);
-const addGoal = () => {
-	goals.value.push(enteredGoal.value);
-	console.log(goals.value);
+const task = ref('');
+const tasks = reactive([]);
+const addTask = () => {
+	tasks.push(task.value);
+};
+const isActive = ref(true);
+const hideList = () => {
+	isActive.value = !isActive.value;
 };
 </script>
 <template>
 	<div>
 		<header>
-			<h1>Vue Course Goals</h1>
+			<h1>Vue Lists and Conditional Content</h1>
 		</header>
-		<section id="user-goals">
-			<h2>My course goals</h2>
-			<input type="text" v-model="enteredGoal" />
-			<button @click="addGoal">Add Goal</button>
-			<p v-if="goals.length === 0">
-				No goals have been added yet - please start adding some!
-			</p>
-			<ul v-else>
-				<li v-for="goal1 in goals">{{ goal1 }}</li>
+		<section id="assignment">
+			<h2>Assignment</h2>
+			<input type="text" v-model="task" />
+			<button @click="addTask">Add Task</button>
+			<ul v-show="isActive">
+				<li v-for="task in tasks">{{ task }}</li>
 			</ul>
+			<button @click="hideList">{{ isActive ? 'Hide' : 'Show' }}</button>
 		</section>
 	</div>
 </template>
